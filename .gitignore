@@ -17,3 +17,5 @@ NashornProfile.txt
 **/JTwork/**
 /src/utils/LogCompilation/target/
 jdk
+criu-dist.tar.gz*
+criu-dist

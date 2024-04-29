@@ -320,20 +320,24 @@ bool VM_Crac::check_fds() {
       }
     }
 
-    static const char* allowed_details[]={
-      "anon_inode:[eventpoll]",
-      // "anon_inode:[timerfd]",
-      // "anon_inode:[signalfd]",
-      "anon_inode:[eventfd]"
-    };
+    // static const char* allowed_details[]={
+    //   "anon_inode:[eventpoll]",
+    //   // "anon_inode:[timerfd]",
+    //   // "anon_inode:[signalfd]",
+    //   "anon_inode:[eventfd]"
+    // };
 
-    for (unsigned int j = 0; j < sizeof(allowed_details) / sizeof(allowed_details[0]); ++j) {
-      const char* allowed_detail = allowed_details[j];
-      if(strstr(details, allowed_detail)){
+    // for (unsigned int j = 0; j < 2; ++j) {
+    //   const char* allowed_detail = allowed_details[j];
+      if(strcmp(detailsbuf,  "anon_inode:[eventpoll]")==0){
         print_resources("OK: allowed detail\n");
         continue;
       }
-    }
+      if(strcmp(detailsbuf,  "anon_inode:[eventfd]")==0){
+        print_resources("OK: allowed detail\n");
+        continue;
+      }
+    // }
 
     print_resources("BAD: opened by application\n");
     ok = false;
