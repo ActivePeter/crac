@@ -366,52 +366,52 @@ class EPollSelectorImpl extends SelectorImpl implements JDKResource {
 
     @Override
     public void beforeCheckpoint(Context<? extends Resource> context) throws Exception {
-        if (!isOpen()) {
-            return;
-        }
+        // if (!isOpen()) {
+        //     return;
+        // }
 
-        synchronized (interruptLock) {
-            checkpointState = CheckpointRestoreState.CHECKPOINT_TRANSITION;
-            eventfd.set();
-            int tries = 5;
-            while (checkpointState == CheckpointRestoreState.CHECKPOINT_TRANSITION && 0 < tries--) {
-                try {
-                    interruptLock.wait(5);
-                } catch (InterruptedException e) {
-                }
-            }
-            if (checkpointState == CheckpointRestoreState.CHECKPOINT_TRANSITION) {
-                Thread thr = new MoveToCheckpointThread(this);
-                thr.setDaemon(true);
-                thr.start();
-            }
-            while (checkpointState == CheckpointRestoreState.CHECKPOINT_TRANSITION) {
-                try {
-                    interruptLock.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-            if (checkpointState == CheckpointRestoreState.CHECKPOINT_ERROR) {
-                throw new IllegalSelectorException();
-            }
-        }
+        // synchronized (interruptLock) {
+        //     checkpointState = CheckpointRestoreState.CHECKPOINT_TRANSITION;
+        //     eventfd.set();
+        //     int tries = 5;
+        //     while (checkpointState == CheckpointRestoreState.CHECKPOINT_TRANSITION && 0 < tries--) {
+        //         try {
+        //             interruptLock.wait(5);
+        //         } catch (InterruptedException e) {
+        //         }
+        //     }
+        //     if (checkpointState == CheckpointRestoreState.CHECKPOINT_TRANSITION) {
+        //         Thread thr = new MoveToCheckpointThread(this);
+        //         thr.setDaemon(true);
+        //         thr.start();
+        //     }
+        //     while (checkpointState == CheckpointRestoreState.CHECKPOINT_TRANSITION) {
+        //         try {
+        //             interruptLock.wait();
+        //         } catch (InterruptedException e) {
+        //         }
+        //     }
+        //     if (checkpointState == CheckpointRestoreState.CHECKPOINT_ERROR) {
+        //         throw new IllegalSelectorException();
+        //     }
+        // }
     }
 
     @Override
     public void afterRestore(Context<? extends Resource> context) throws Exception {
-        if (!isOpen()) {
-            return;
-        }
+        // if (!isOpen()) {
+        //     return;
+        // }
 
-        synchronized (interruptLock) {
-            checkpointState = CheckpointRestoreState.RESTORE_TRANSITION;
-            interruptLock.notifyAll();
-            while (checkpointState == CheckpointRestoreState.RESTORE_TRANSITION) {
-                try {
-                    interruptLock.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-        }
+        // synchronized (interruptLock) {
+        //     checkpointState = CheckpointRestoreState.RESTORE_TRANSITION;
+        //     interruptLock.notifyAll();
+        //     while (checkpointState == CheckpointRestoreState.RESTORE_TRANSITION) {
+        //         try {
+        //             interruptLock.wait();
+        //         } catch (InterruptedException e) {
+        //         }
+        //     }
+        // }
     }
 }
