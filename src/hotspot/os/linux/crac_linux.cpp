@@ -337,6 +337,11 @@ bool VM_Crac::check_fds() {
         print_resources("OK: allowed detail\n");
         continue;
       }
+      if(strcmp(detailsbuf,  "anon_inode:[timerfd]")==0){
+        print_resources("OK: allowed detail\n");
+        continue;
+      }
+      
     // }
 
     print_resources("BAD: opened by application\n");
